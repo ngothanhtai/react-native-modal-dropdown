@@ -235,7 +235,7 @@ export default class ModalDropdown extends Component {
     const windowHeight = dimensions.height;
 
     const dropdownHeight = (dropdownStyle && StyleSheet.flatten(dropdownStyle).height) ||
-      StyleSheet.flatten(styles.dropdown).height;
+      this._calcHeight();
 
     const bottomSpace = windowHeight - this._buttonFrame.y - this._buttonFrame.h;
     const rightSpace = windowWidth - this._buttonFrame.x;
@@ -261,6 +261,19 @@ export default class ModalDropdown extends Component {
     }
     return adjustFrame ? adjustFrame(positionStyle) : positionStyle;
   }
+
+  _calcHeight = () => {
+    const { options } = this.props;
+
+    let multiplier = options.length;
+    if (options.length > 5) {
+      multiplier = 5;
+    } else if (options.length < 1) {
+      multiplier = 1;
+    }
+
+    return (34 + StyleSheet.hairlineWidth) * multiplier;
+  };
 
   _onRequestClose = () => {
     const {onDropdownWillHide} = this.props;
